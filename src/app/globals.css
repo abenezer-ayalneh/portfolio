@@ -10,15 +10,15 @@
 		--card-foreground: 24 20% 12%;
 		--popover: 0 0% 100%;
 		--popover-foreground: 24 20% 12%;
-		--primary: 22 90% 48%;
+		--primary: 22 90% 36%;
 		--primary-foreground: 40 33% 98%;
 		--secondary: 30 20% 94%;
 		--secondary-foreground: 24 20% 12%;
 		--muted: 30 20% 94%;
 		--muted-foreground: 24 8% 40%;
-		--accent: 22 90% 48%;
+		--accent: 22 90% 36%;
 		--accent-foreground: 40 33% 98%;
-		--destructive: 0 72% 50%;
+		--destructive: 0 72% 46%;
 		--destructive-foreground: 40 33% 98%;
 		--border: 30 14% 88%;
 		--input: 30 14% 88%;
@@ -42,7 +42,7 @@
 		--muted-foreground: 30 8% 60%;
 		--accent: 24 95% 56%;
 		--accent-foreground: 24 35% 8%;
-		--destructive: 0 72% 51%;
+		--destructive: 0 72% 46%;
 		--destructive-foreground: 30 15% 96%;
 		--border: 28 10% 16%;
 		--input: 28 10% 16%;
@@ -225,5 +225,10 @@ html {
 	.animate-ping,
 	.gallery-hint-chevron {
 		animation: none !important;
+	}
+
+	[data-state] {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
 	}
 }

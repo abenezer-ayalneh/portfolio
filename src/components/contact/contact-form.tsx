@@ -71,7 +71,7 @@ export function ContactForm() {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 				<div className="grid gap-5 sm:grid-cols-2">
 					<FormField
 						control={form.control}
@@ -80,7 +80,7 @@ export function ContactForm() {
 							<FormItem>
 								<FormLabel className="font-mono text-xs uppercase tracking-wider">First name</FormLabel>
 								<FormControl>
-									<Input placeholder="Abenezer" {...field} />
+									<Input placeholder="Abenezer" autoComplete="given-name" required aria-required="true" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -93,7 +93,7 @@ export function ContactForm() {
 							<FormItem>
 								<FormLabel className="font-mono text-xs uppercase tracking-wider">Last name</FormLabel>
 								<FormControl>
-									<Input placeholder="Ayalneh" {...field} />
+									<Input placeholder="Ayalneh" autoComplete="family-name" required aria-required="true" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -108,7 +108,7 @@ export function ContactForm() {
 						<FormItem>
 							<FormLabel className="font-mono text-xs uppercase tracking-wider">Email address</FormLabel>
 							<FormControl>
-								<Input type="email" placeholder="you@example.com" {...field} />
+								<Input type="email" placeholder="you@example.com" autoComplete="email" required aria-required="true" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -125,6 +125,9 @@ export function ContactForm() {
 								<Textarea
 									placeholder="Tell me about your project, opportunity, or just say hi..."
 									className="min-h-36 resize-none"
+									minLength={10}
+									required
+									aria-required="true"
 									{...field}
 								/>
 							</FormControl>

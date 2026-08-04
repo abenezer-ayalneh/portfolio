@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
@@ -13,7 +13,6 @@ const navLinks = [
 	{ label: 'about', href: '/#about' },
 	{ label: 'experience', href: '/#experience' },
 	{ label: 'skills', href: '/#skills' },
-	{ label: 'ai', href: '/#ai' },
 	{ label: 'projects', href: '/projects' },
 	{ label: 'contact', href: '/contact' },
 ]
@@ -77,6 +76,7 @@ export function Navbar() {
 						<SheetContent side="right" className="w-72">
 							<SheetHeader>
 								<SheetTitle className="text-left">Navigation</SheetTitle>
+								<SheetDescription className="sr-only">Portfolio sections, projects, contact details, and a resume download.</SheetDescription>
 							</SheetHeader>
 							<nav className="mt-8 flex flex-col gap-2" aria-label="Mobile navigation">
 								{navLinks.map((link) => (

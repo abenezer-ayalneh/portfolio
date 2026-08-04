@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, type Variants } from 'framer-motion'
+import { motion, type Variants, useReducedMotion } from 'framer-motion'
 import { type ReactNode } from 'react'
 
 interface SectionWrapperProps {
@@ -10,6 +10,12 @@ interface SectionWrapperProps {
 }
 
 export function SectionWrapper({ children, className = '', delay = 0 }: SectionWrapperProps) {
+	const reduced = useReducedMotion() ?? false
+
+	if (reduced) {
+		return <div className={className}>{children}</div>
+	}
+
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 40 }}

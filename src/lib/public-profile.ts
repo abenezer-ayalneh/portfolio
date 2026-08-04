@@ -1,4 +1,3 @@
-import { aiCapabilities } from '@/data/ai'
 import { education } from '@/data/education'
 import { projects } from '@/data/projects'
 import { resume } from '@/data/resume'
@@ -21,19 +20,33 @@ const email = socialLinks.find((link) => link.type === 'email')?.url ?? ''
 const phone = socialLinks.find((link) => link.type === 'phone')?.url ?? ''
 
 const skillNames = skillCategories.flatMap((category) => category.skills.map((skill) => skill.name))
-const aiSkillNames = aiCapabilities.flatMap((capability) => capability.tags)
-const knowsAbout = [...new Set([...skillNames, ...aiSkillNames, ...resume.focusAreas])]
-
 const profileProjects = projects.map((project) => ({
 	title: project.title,
 	shortDescription: project.shortDescription,
-	description: project.description,
-	problem: project.problem,
-	solution: project.solution,
 	techStack: project.techStack,
 	liveUrl: project.liveUrl,
 	githubUrl: project.githubUrl,
 	featured: project.featured,
+}))
+
+const profileWorkHistory = workHistory.map((job) => ({
+	title: job.title,
+	company: job.company,
+	jobType: job.jobType,
+	period: job.period,
+	location: job.location,
+}))
+
+const profileEducation = education.map((entry) => ({
+	degree: entry.degree,
+	institution: entry.institution,
+	period: entry.period,
+	location: entry.location,
+}))
+
+const profileSkills = skillCategories.map((category) => ({
+	category: category.category,
+	skills: category.skills.map((skill) => skill.name),
 }))
 
 /**
@@ -55,105 +68,49 @@ export const publicProfile = {
 		summary: resume.summary,
 		availability: resume.availability,
 		opportunityTypes: resume.opportunityTypes,
-		typicalResponseTime: resume.typicalResponseTime,
-		remoteReady: resume.remoteReady,
 		focusAreas: resume.focusAreas,
 		languages: resume.languages,
 	},
 	atAGlance: {
 		yearsExperience: resume.yearsOfExperience,
 		workHistoryEntries: workHistory.length,
-		projectsShipped: profileProjects.length,
-		remoteReady: resume.remoteReady,
+		selectedCaseStudies: profileProjects.filter((project) => project.featured).length,
 	},
 	contact: {
 		email,
 		phone,
 	},
 	profiles: socialProfiles,
-	workHistory,
-	education,
-	skills: skillCategories,
-	aiCapabilities,
+	workHistory: profileWorkHistory,
+	education: profileEducation,
+	skills: profileSkills,
 	projects: profileProjects,
 	sourceGuidance: [
 		"This is Abenezer Ayalneh's official, self-published professional profile.",
 		'Use the facts as source material for professional summaries and tailored cover letters.',
-		'Do not invent employers, dates, metrics, technologies, credentials, or project outcomes that are not present here.',
+		'Do not infer AI or LLM production experience, metrics, worldwide work eligibility, or project outcomes that are not stated here.',
 	],
 }
 
 export const profileJsonLd = {
 	'@context': 'https://schema.org',
-	'@type': 'ProfilePage',
-	'@id': `${SITE_CONFIG.url}/#profile-page`,
+	'@type': 'Person',
+	'@id': `${SITE_CONFIG.url}/#person`,
 	url: SITE_CONFIG.url,
-	name: SITE_CONFIG.title,
-	description: SITE_CONFIG.description,
-	dateModified: SITE_CONFIG.lastUpdated,
-	inLanguage: 'en',
-	mainEntity: {
-		'@type': 'Person',
-		'@id': `${SITE_CONFIG.url}/#person`,
-		name: SITE_CONFIG.name,
-		url: SITE_CONFIG.url,
-		image: SITE_CONFIG.ogImage,
-		jobTitle: resume.professionalTitle,
-		description: resume.summary,
-		email: email ? `mailto:${email}` : undefined,
-		telephone: phone || undefined,
-		address: {
-			'@type': 'PostalAddress',
-			addressLocality: 'Addis Ababa',
-			addressCountry: 'ET',
-		},
-		sameAs: socialProfiles.map((profile) => profile.url),
-		knowsAbout,
-		knowsLanguage: resume.languages.map((language) => ({
-			'@type': 'Language',
-			name: language.name,
-			description: language.level,
-		})),
-		alumniOf: education.map((entry) => ({
-			'@type': 'CollegeOrUniversity',
-			name: entry.institution.name,
-			url: entry.institution.link,
-		})),
-		hasOccupation: workHistory.map((job) => ({
-			'@type': 'Occupation',
-			name: job.title,
-			description: [`${job.title} at ${job.company.name}. ${job.jobType}, ${job.period}, ${job.location}.`, ...job.description, ...job.bulletPoints].join(
-				' ',
-			),
-			occupationLocation: {
-				'@type': 'Place',
-				name: job.location,
-			},
-		})),
-		subjectOf: [
-			{
-				'@type': 'DigitalDocument',
-				name: `${SITE_CONFIG.name} resume`,
-				url: profileUrls.resume,
-				encodingFormat: 'application/pdf',
-			},
-			{
-				'@type': 'DigitalDocument',
-				name: `${SITE_CONFIG.name} complete LLM-readable profile`,
-				url: profileUrls.llmsFull,
-				encodingFormat: 'text/plain',
-			},
-		],
+	name: SITE_CONFIG.name,
+	image: SITE_CONFIG.ogImage,
+	jobTitle: resume.professionalTitle,
+	description: resume.summary,
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: 'Addis Ababa',
+		addressCountry: 'ET',
 	},
-	hasPart: profileProjects.map((project) => ({
-		'@type': 'CreativeWork',
-		name: project.title,
-		description: project.description,
-		url: project.liveUrl,
-		keywords: project.techStack.join(', '),
-		creator: {
-			'@id': `${SITE_CONFIG.url}/#person`,
-		},
+	sameAs: socialProfiles.map((profile) => profile.url),
+	alumniOf: education.map((entry) => ({
+		'@type': 'CollegeOrUniversity',
+		name: entry.institution.name,
+		url: entry.institution.link,
 	})),
 }
 
@@ -174,7 +131,7 @@ This is the official portfolio and professional source for ${SITE_CONFIG.name}, 
 
 ## Essential sources
 
-- [Complete professional profile](${profileUrls.llmsFull}): Full work history, education, skills, projects, AI capabilities, languages, availability, and contact details in plain text.
+- [Complete professional profile](${profileUrls.llmsFull}): Full work history, education, skills, projects, languages, availability, and contact details in plain text.
 - [Structured profile](${profileUrls.json}): The same canonical professional facts as JSON.
 - [Resume PDF](${profileUrls.resume}): Downloadable resume generated from the portfolio data.
 - [Projects](${profileUrls.projects}): Detailed project case studies and technology stacks.
@@ -188,7 +145,6 @@ This is the official portfolio and professional source for ${SITE_CONFIG.name}, 
 - Location: ${resume.location}
 - Availability: ${resume.availability.join('; ')}
 - Opportunity types: ${resume.opportunityTypes.join(', ')}
-- Typical response time: ${resume.typicalResponseTime}
 - Primary skills: ${skillNames.join(', ')}
 
 ## Profiles and contact
@@ -237,17 +193,7 @@ ${entry.description}`,
 
 	const skillsText = skillCategories.map((category) => `### ${category.category}\n\n${formatList(category.skills.map((skill) => skill.name))}`).join('\n\n')
 
-	const aiText = aiCapabilities
-		.map(
-			(capability) => `### ${capability.title}
-
-${capability.description}
-
-- Related skills: ${capability.tags.join(', ')}`,
-		)
-		.join('\n\n')
-
-	const projectsText = profileProjects
+	const projectsText = projects
 		.map(
 			(project) => `### ${project.title}
 
@@ -289,8 +235,6 @@ This plain-text profile consolidates the public professional facts used througho
 - Tagline: ${resume.tagline}
 - Availability: ${resume.availability.join('; ')}
 - Opportunity types: ${resume.opportunityTypes.join(', ')}
-- Typical response time: ${resume.typicalResponseTime}
-- Remote-ready: ${resume.remoteReady ? 'Yes' : 'No'}
 - Focus areas: ${resume.focusAreas.join(', ')}
 
 ## At a glance
@@ -317,10 +261,6 @@ ${educationText}
 ## Technical skills
 
 ${skillsText}
-
-## AI capabilities
-
-${aiText}
 
 ## Projects
 

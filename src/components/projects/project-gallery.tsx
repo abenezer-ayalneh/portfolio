@@ -11,6 +11,7 @@ type GalleryImage = string | StaticImageData
 interface ProjectGalleryProps {
 	images: GalleryImage[]
 	title: string
+	priority?: boolean
 }
 
 /** Stable string key for an image whether it's a URL string or a static import. */
@@ -32,7 +33,7 @@ const HINT_KEY = 'portfolio:carousel-hint-seen'
 // even before the localStorage flag is written.
 let hintClaimedThisLoad = false
 
-export function ProjectGallery({ images, title }: ProjectGalleryProps) {
+export function ProjectGallery({ images, title, priority = false }: ProjectGalleryProps) {
 	const total = images.length
 	const multiple = total > 1
 
@@ -86,7 +87,9 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
 	}, [api, dismissHint])
 
 	if (!multiple) {
-		return <Image src={images[0]} alt={`${title} screenshot`} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top" />
+		return (
+			<Image src={images[0]} alt={`${title} screenshot`} fill priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top" />
+		)
 	}
 
 	return (
@@ -98,12 +101,13 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
 			className="group/gallery absolute inset-0 outline-none focus-visible:ring-2 focus-visible:ring-primary/60">
 			<CarouselContent className="ml-0">
 				{images.map((src, i) => (
-					<CarouselItem key={imageKey(src)} className="pl-0">
+					<CarouselItem key={imageKey(src)} aria-label={`Screenshot ${i + 1} of ${total}`} className="pl-0">
 						<div className="relative aspect-[16/10] w-full">
 							<Image
 								src={src}
 								alt={`${title} screenshot ${i + 1} of ${total}`}
 								fill
+								priority={priority && i === 0}
 								sizes="(max-width: 1024px) 100vw, 50vw"
 								className="object-cover object-top"
 							/>
@@ -122,7 +126,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
 					dismissHint()
 				}}
 				className={cn(
-					'absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-primary/40 bg-background/70 p-1.5 text-primary backdrop-blur-sm transition',
+					'absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/40 bg-background/70 text-primary backdrop-blur-sm transition',
 					'hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60',
 					'disabled:pointer-events-none disabled:opacity-0',
 				)}>
@@ -137,30 +141,38 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
 					dismissHint()
 				}}
 				className={cn(
-					'absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-primary/40 bg-background/70 p-1.5 text-primary backdrop-blur-sm transition',
+					'absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/40 bg-background/70 text-primary backdrop-blur-sm transition',
 					'hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60',
 					'disabled:pointer-events-none disabled:opacity-0',
 				)}>
 				<ChevronRight className="h-4 w-4" />
 			</button>
 
+			<p className="sr-only" aria-live="polite" aria-atomic="true">
+				{title}: screenshot {selectedIndex + 1} of {total}
+			</p>
+
 			{/* Dot page indicator. */}
-			<div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5">
+			<div className="absolute bottom-1 left-1/2 z-10 flex -translate-x-1/2 items-center" role="group" aria-label={`Choose a ${title} screenshot`}>
 				{images.map((src, i) => (
 					<button
 						key={imageKey(src)}
 						type="button"
-						aria-label={`Go to screenshot ${i + 1}`}
+						aria-label={`Show screenshot ${i + 1} of ${total}`}
 						aria-current={i === selectedIndex}
 						onClick={() => {
 							api?.scrollTo(i)
 							dismissHint()
 						}}
-						className={cn(
-							'h-1.5 rounded-full transition-all',
-							i === selectedIndex ? 'w-4 bg-primary' : 'w-1.5 bg-muted-foreground/40 hover:bg-primary/60',
-						)}
-					/>
+						className="inline-flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60">
+						<span
+							aria-hidden="true"
+							className={cn(
+								'h-1.5 rounded-full transition-all',
+								i === selectedIndex ? 'w-4 bg-primary' : 'w-1.5 bg-muted-foreground/40 hover:bg-primary/60',
+							)}
+						/>
+					</button>
 				))}
 			</div>
 

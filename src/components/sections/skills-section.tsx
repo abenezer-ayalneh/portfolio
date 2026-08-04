@@ -1,12 +1,14 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { SectionWrapper, staggerContainer, fadeUpItem } from '@/components/shared/section-wrapper'
 import { SectionHeading } from '@/components/shared/section-heading'
 import { MonoTag } from '@/components/shared/mono-tag'
 import { skillCategories } from '@/data/skills'
 
 export function SkillsSection() {
+	const reduced = useReducedMotion() ?? false
+
 	return (
 		<section id="skills" aria-labelledby="skills-heading" className="bg-muted/30 py-20 lg:py-28">
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -22,13 +24,15 @@ export function SkillsSection() {
 				</SectionWrapper>
 
 				<motion.div
-					variants={staggerContainer}
-					initial="hidden"
-					whileInView="show"
-					viewport={{ once: true, margin: '-80px' }}
+					{...(!reduced && {
+						variants: staggerContainer,
+						initial: 'hidden',
+						whileInView: 'show',
+						viewport: { once: true, margin: '-80px' },
+					})}
 					className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
 					{skillCategories.map((category) => (
-						<motion.div key={category.category} variants={fadeUpItem}>
+						<motion.div key={category.category} {...(!reduced && { variants: fadeUpItem })}>
 							<h3 className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground">
 								<span className="text-primary/60">/</span>
 								{category.category}

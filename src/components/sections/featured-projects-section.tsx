@@ -18,7 +18,7 @@ export function FeaturedProjectsSection() {
 						eyebrow="selected work"
 						title="Featured projects"
 						titleId="work-heading"
-						description="A few things I've built and shipped — from real-time multiplayer games to production betting platforms."
+						description="A few things I've built and shipped — spanning real-time collaboration, multiplayer systems, and full-stack web products."
 						className="mb-16"
 					/>
 				</SectionWrapper>

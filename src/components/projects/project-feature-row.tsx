@@ -37,7 +37,7 @@ export function ProjectFeatureRow({ project, index }: ProjectFeatureRowProps) {
 					{/* Gallery or branded placeholder */}
 					<div className="relative aspect-[16/10] bg-gradient-to-br from-surface via-muted/40 to-background">
 						{project.images && project.images.length > 0 ? (
-							<ProjectGallery images={project.images} title={project.title} />
+							<ProjectGallery images={project.images} title={project.title} priority={index === 0} />
 						) : (
 							<div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
 								<div
@@ -59,7 +59,7 @@ export function ProjectFeatureRow({ project, index }: ProjectFeatureRowProps) {
 			{/* Write-up */}
 			<div className={cn('lg:order-2', reversed && 'lg:order-1')}>
 				<p className="mb-3 font-mono text-xs text-primary">
-					<span className="text-primary/50">{project.featured ? '★ featured' : 'project'}</span> · {number}
+					<span className="text-primary/50">{project.featured ? '★ featured' : 'past client work'}</span> · {number}
 				</p>
 				<h3 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">{project.title}</h3>
 				<p className="mt-3 leading-relaxed text-muted-foreground">{project.shortDescription}</p>

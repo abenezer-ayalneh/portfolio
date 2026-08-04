@@ -120,7 +120,7 @@ export const projects: ProjectEntry[] = [
 			'Engineered an Angular + Ionic hybrid application with NgRx SignalStore for reactive state management and Web Workers for off-thread WebSocket processing, ensuring smooth UI performance under high-frequency data updates.',
 		techStack: ['Angular', 'Ionic', 'TypeScript', 'NgRx SignalStore', 'TailwindCSS', 'WebSocket', 'Web Workers'],
 		liveUrl: 'https://m.freedemokit.com',
-		featured: true,
+		featured: false,
 		images: [freeDemoKit1, freeDemoKit2, freeDemoKit3],
 	},
 	// {

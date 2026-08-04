@@ -9,7 +9,7 @@ import { Github } from '@/components/icons/brand-icons'
 
 export const metadata: Metadata = {
 	title: 'Projects',
-	description: 'Projects built by Abenezer Ayalneh — real-time multiplayer games, betting platforms, and full-stack web applications.',
+	description: 'Project case studies by Abenezer Ayalneh — real-time systems, multiplayer games, and full-stack web applications.',
 }
 
 export default function ProjectsPage() {
@@ -44,8 +44,8 @@ export default function ProjectsPage() {
 							Projects
 						</h1>
 						<p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-							A selection of projects I&apos;ve built — from real-time multiplayer games to full-scale betting platforms. Each one is a problem I
-							found worth solving.
+							A selection of projects I&apos;ve built — from real-time multiplayer games to full-stack web applications. Each one is a problem I found
+							worth solving.
 						</p>
 					</SectionWrapper>
 				</div>
@@ -54,6 +54,7 @@ export default function ProjectsPage() {
 			{/* Project feature rows */}
 			<section className="pb-20 lg:pb-28" aria-label="All projects">
 				<div className="mx-auto max-w-6xl space-y-20 px-4 sm:px-6 lg:space-y-28 lg:px-8">
+					<h2 className="sr-only">Project case studies</h2>
 					{projects.map((project, index) => (
 						<SectionWrapper key={project.title}>
 							<ProjectFeatureRow project={project} index={index} />

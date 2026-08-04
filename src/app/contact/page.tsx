@@ -141,8 +141,7 @@ export default function ContactPage() {
 										<p className="font-mono text-xs uppercase tracking-wider text-primary">available</p>
 									</div>
 									<p className="text-sm leading-relaxed text-muted-foreground">
-										I typically respond <span className="font-medium text-foreground">{resume.typicalResponseTime.toLowerCase()}</span>.
-										Currently <span className="font-medium text-primary">open to new opportunities</span> — {opportunityTypesText}.
+										<span className="font-medium text-primary">Open to new opportunities</span> — remote employment, {opportunityTypesText}.
 									</p>
 								</div>
 							</SectionWrapper>

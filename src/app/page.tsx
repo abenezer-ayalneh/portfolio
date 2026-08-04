@@ -5,8 +5,8 @@ import { FeaturedProjectsSection } from '@/components/sections/featured-projects
 import { AboutSection } from '@/components/sections/about-section'
 import { ExperienceSection } from '@/components/sections/experience-section'
 import { SkillsSection } from '@/components/sections/skills-section'
-import { AiSection } from '@/components/sections/ai-section'
 import { CtaBand } from '@/components/sections/cta-band'
+import { profileJsonLd } from '@/lib/public-profile'
 
 export const metadata: Metadata = {
 	title: 'Abenezer Ayalneh — Full-Stack Developer',
@@ -17,15 +17,17 @@ export const metadata: Metadata = {
 }
 
 export default function HomePage() {
+	const serializedProfileJsonLd = JSON.stringify(profileJsonLd).replace(/</g, '\\u003c')
+
 	return (
 		<>
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializedProfileJsonLd }} />
 			<HeroSection />
 			<StatsStrip />
 			<FeaturedProjectsSection />
 			<AboutSection />
 			<ExperienceSection />
 			<SkillsSection />
-			<AiSection />
 			<CtaBand />
 		</>
 	)

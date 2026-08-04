@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { SectionWrapper, staggerContainer, fadeUpItem } from '@/components/shared/section-wrapper'
 import { SectionHeading } from '@/components/shared/section-heading'
 import { Card, CardContent } from '@/components/ui/card'
@@ -8,6 +8,8 @@ import { workHistory } from '@/data/work'
 import { MapPin, Calendar, ExternalLink } from 'lucide-react'
 
 export function ExperienceSection() {
+	const reduced = useReducedMotion() ?? false
+
 	return (
 		<section id="experience" aria-labelledby="experience-heading" className="py-20 lg:py-28">
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -16,16 +18,18 @@ export function ExperienceSection() {
 				</SectionWrapper>
 
 				<motion.div
-					variants={staggerContainer}
-					initial="hidden"
-					whileInView="show"
-					viewport={{ once: true, margin: '-80px' }}
+					{...(!reduced && {
+						variants: staggerContainer,
+						initial: 'hidden',
+						whileInView: 'show',
+						viewport: { once: true, margin: '-80px' },
+					})}
 					className="relative space-y-6">
 					{/* Timeline line */}
 					<div className="absolute left-[19px] top-8 bottom-0 hidden w-0.5 bg-border md:block" />
 
 					{workHistory.map((job, index) => (
-						<motion.article key={job.title + job.period} variants={fadeUpItem} className="relative">
+						<motion.article key={job.title + job.period} {...(!reduced && { variants: fadeUpItem })} className="relative">
 							<div className="flex gap-6">
 								{/* Timeline dot */}
 								<div className="hidden flex-col items-center md:flex">

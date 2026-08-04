@@ -4,7 +4,6 @@ import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
-import { profileJsonLd } from '@/lib/public-profile'
 import './globals.css'
 
 // Three-role type system: Inter (body), Space Grotesk (display), JetBrains Mono
@@ -23,8 +22,6 @@ const jetbrainsMono = JetBrains_Mono({
 	subsets: ['latin'],
 	variable: '--font-mono',
 })
-
-const serializedProfileJsonLd = JSON.stringify(profileJsonLd).replace(/</g, '\\u003c')
 
 export const metadata: Metadata = {
 	metadataBase: new URL('https://abenezer-ayalneh.dev'),
@@ -91,7 +88,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable portfolio summary" />
 				<link rel="alternate" type="text/plain" href="/llms-full.txt" title="Complete LLM-readable professional profile" />
 				<link rel="alternate" type="application/json" href="/profile.json" title="Machine-readable professional profile" />
-				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializedProfileJsonLd }} />
 			</head>
 			<body className="min-h-screen bg-background font-sans antialiased">
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>

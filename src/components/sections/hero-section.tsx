@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { motion, type Variants } from 'framer-motion'
+import { motion, type Variants, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Download, Mail, Phone } from 'lucide-react'
 import { Github, Linkedin } from '@/components/icons/brand-icons'
 import { Button } from '@/components/ui/button'
@@ -68,6 +68,8 @@ const itemVariants: Variants = {
 }
 
 export function HeroSection() {
+	const reduced = useReducedMotion() ?? false
+
 	return (
 		<section id="hero" aria-label="Introduction" className="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden">
 			{/* Hero backdrop: faint amber grid + radial glow, masked toward the edges. */}
@@ -90,7 +92,7 @@ export function HeroSection() {
 			<div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
 				<div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10">
 					{/* Left: bold statement */}
-					<motion.div variants={containerVariants} initial="hidden" animate="visible">
+					<motion.div {...(!reduced && { variants: containerVariants, initial: 'hidden', animate: 'visible' })}>
 						<motion.p variants={itemVariants} className="mb-5 font-mono text-sm tracking-wide text-muted-foreground">
 							<span className="text-primary">~ $</span> whoami
 						</motion.p>
@@ -153,13 +155,15 @@ export function HeroSection() {
 
 					{/* Right: CRT terminal panel */}
 					<motion.div
-						initial={{ opacity: 0, y: 24, scale: 0.98 }}
-						animate={{ opacity: 1, y: 0, scale: 1 }}
-						transition={{
-							duration: 0.6,
-							delay: 0.2,
-							ease: [0.25, 0.46, 0.45, 0.94],
-						}}>
+						{...(!reduced && {
+							initial: { opacity: 0, y: 24, scale: 0.98 },
+							animate: { opacity: 1, y: 0, scale: 1 },
+							transition: {
+								duration: 0.6,
+								delay: 0.2,
+								ease: [0.25, 0.46, 0.45, 0.94],
+							},
+						})}>
 						<TerminalPanel />
 					</motion.div>
 				</div>
@@ -174,22 +178,8 @@ const LINES = [
 		cmd: 'cat stack.txt',
 		out: 'TypeScript · Angular · Nest.js · React · Next.js',
 	},
-	{ cmd: 'uptime', out: '5+ years · gaming + enterprise · remote-ready' },
+	{ cmd: 'uptime', out: '5+ years · gaming + enterprise · open to remote work' },
 ] as const
-
-function usePrefersReducedMotion() {
-	const [reduced, setReduced] = useState(false)
-
-	useEffect(() => {
-		const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-		const update = () => setReduced(mq.matches)
-		update()
-		mq.addEventListener('change', update)
-		return () => mq.removeEventListener('change', update)
-	}, [])
-
-	return reduced
-}
 
 function Cursor() {
 	return (
@@ -200,7 +190,7 @@ function Cursor() {
 }
 
 function TerminalPanel() {
-	const prefersReduced = usePrefersReducedMotion()
+	const prefersReduced = useReducedMotion() ?? false
 	const [lineIdx, setLineIdx] = useState(0)
 	const [charIdx, setCharIdx] = useState(0)
 	const [showOut, setShowOut] = useState(false)
