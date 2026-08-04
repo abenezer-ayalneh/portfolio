@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { Mail } from 'lucide-react'
 import { Github, Linkedin } from '@/components/icons/brand-icons'
 import { Separator } from '@/components/ui/separator'
+import { socialLinks } from '@/data/social'
+
+function getSocialUrl(name: string) {
+	const link = socialLinks.find((item) => item.name === name)
+	if (!link) throw new Error(`Missing ${name} social link`)
+	return link.url
+}
 
 export function Footer() {
 	const currentYear = new Date().getFullYear()
@@ -21,7 +28,7 @@ export function Footer() {
 
 					<div className="flex items-center gap-4">
 						<a
-							href="https://github.com/abenezer-ayalneh"
+							href={getSocialUrl('GitHub')}
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="GitHub profile"
@@ -29,7 +36,7 @@ export function Footer() {
 							<Github className="h-5 w-5" />
 						</a>
 						<a
-							href="https://www.linkedin.com/in/abenezer-ayalneh-b579911b5/"
+							href={getSocialUrl('LinkedIn')}
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="LinkedIn profile"
@@ -37,7 +44,7 @@ export function Footer() {
 							<Linkedin className="h-5 w-5" />
 						</a>
 						<a
-							href="mailto:abenezer.ayalneh.42@gmail.com"
+							href={`mailto:${getSocialUrl('Email')}`}
 							aria-label="Send email"
 							className="text-muted-foreground hover:text-primary transition-colors">
 							<Mail className="h-5 w-5" />
@@ -48,7 +55,10 @@ export function Footer() {
 				<Separator className="my-6" />
 
 				<p className="text-center font-mono text-xs text-muted-foreground">
-					<span className="text-primary/60">{'//'}</span> © {currentYear} Abenezer Ayalneh · built with next.js · tailwind · framer-motion
+					<span className="text-primary/60">{'//'}</span> © {currentYear} Abenezer Ayalneh · built with next.js · tailwind · framer-motion ·{' '}
+					<Link href="/llms.txt" className="hover:text-primary hover:underline">
+						AI-readable profile
+					</Link>
 				</p>
 			</div>
 		</footer>

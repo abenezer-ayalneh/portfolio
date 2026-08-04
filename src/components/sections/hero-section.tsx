@@ -8,27 +8,34 @@ import { Github, Linkedin } from '@/components/icons/brand-icons'
 import { Button } from '@/components/ui/button'
 import { Magnetic } from '@/components/shared/magnetic'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { socialLinks } from '@/data/social'
 import { toast } from 'sonner'
+
+function getSocialUrl(name: string) {
+	const link = socialLinks.find((item) => item.name === name)
+	if (!link) throw new Error(`Missing ${name} social link`)
+	return link.url
+}
 
 const socialActions = [
 	{
 		icon: Github,
 		label: 'GitHub',
 		ariaLabel: 'GitHub profile',
-		action: () => window.open('https://github.com/abenezer-ayalneh', '_blank'),
+		action: () => window.open(getSocialUrl('GitHub'), '_blank'),
 	},
 	{
 		icon: Linkedin,
 		label: 'LinkedIn',
 		ariaLabel: 'LinkedIn profile',
-		action: () => window.open('https://www.linkedin.com/in/abenezer-ayalneh-b579911b5/', '_blank'),
+		action: () => window.open(getSocialUrl('LinkedIn'), '_blank'),
 	},
 	{
 		icon: Mail,
 		label: 'Email',
 		ariaLabel: 'Copy email address',
 		action: () => {
-			navigator.clipboard.writeText('abenezer.ayalneh.42@gmail.com')
+			navigator.clipboard.writeText(getSocialUrl('Email'))
 			toast.success('Email copied to clipboard!')
 		},
 	},
@@ -37,7 +44,7 @@ const socialActions = [
 		label: 'Phone',
 		ariaLabel: 'Copy phone number',
 		action: () => {
-			navigator.clipboard.writeText('+251916667538')
+			navigator.clipboard.writeText(getSocialUrl('Phone'))
 			toast.success('Phone number copied to clipboard!')
 		},
 	},

@@ -2,19 +2,20 @@ import { SectionWrapper } from '@/components/shared/section-wrapper'
 import { SectionHeading } from '@/components/shared/section-heading'
 import { Separator } from '@/components/ui/separator'
 import { education } from '@/data/education'
+import { resume } from '@/data/resume'
 import { MapPin, Calendar, Code2, GraduationCap, ExternalLink } from 'lucide-react'
 
 const highlights = [
-	{ icon: Calendar, label: '5+ years experience' },
-	{ icon: MapPin, label: 'Addis Ababa, Ethiopia' },
-	{ icon: Code2, label: 'Open to remote' },
+	{ icon: Calendar, label: `${resume.yearsOfExperience} experience` },
+	{ icon: MapPin, label: resume.location },
+	{ icon: Code2, label: resume.availability[1] },
 ]
 
 const idLines = [
-	{ k: 'role', v: 'Full-Stack Developer' },
-	{ k: 'exp', v: '5+ years' },
-	{ k: 'focus', v: 'gaming · enterprise' },
-	{ k: 'status', v: 'open to work' },
+	{ k: 'role', v: resume.professionalTitle },
+	{ k: 'exp', v: resume.yearsOfExperience },
+	{ k: 'focus', v: resume.focusAreas.slice(0, 2).join(' · ').toLowerCase() },
+	{ k: 'status', v: resume.availability[0].toLowerCase() },
 ]
 
 export function AboutSection() {

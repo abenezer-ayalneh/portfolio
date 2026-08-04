@@ -1,4 +1,39 @@
 User-agent: *
 Allow: /
 
+# OpenAI search, training, and user-requested retrieval
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic search, training, and user-requested retrieval
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Perplexity search and user-requested retrieval
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google Search and Gemini model grounding/training
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# AI-readable sources: /llms.txt, /llms-full.txt, and /profile.json
 Sitemap: https://abenezer-ayalneh.dev/sitemap.xml

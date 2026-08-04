@@ -4,30 +4,44 @@ import { Mail, Phone, ArrowLeft } from 'lucide-react'
 import { Linkedin } from '@/components/icons/brand-icons'
 import { SectionWrapper } from '@/components/shared/section-wrapper'
 import { ContactForm } from '@/components/contact/contact-form'
+import { resume } from '@/data/resume'
+import { socialLinks } from '@/data/social'
 
 export const metadata: Metadata = {
 	title: 'Contact',
 	description: 'Get in touch with Abenezer Ayalneh — Full-Stack Developer. Available for new opportunities and collaborations.',
 }
 
+function getSocialLink(name: string) {
+	const link = socialLinks.find((item) => item.name === name)
+	if (!link) throw new Error(`Missing ${name} social link`)
+	return link
+}
+
+const email = getSocialLink('Email')
+const phone = getSocialLink('Phone')
+const linkedin = getSocialLink('LinkedIn')
+const opportunityTypes = resume.opportunityTypes.map((type) => type.toLowerCase())
+const opportunityTypesText = `${opportunityTypes.slice(0, -1).join(', ')}, or ${opportunityTypes.at(-1)}`
+
 const contactDetails = [
 	{
 		icon: Mail,
 		label: 'email',
-		value: 'abenezer.ayalneh.42@gmail.com',
-		href: 'mailto:abenezer.ayalneh.42@gmail.com',
+		value: email.url,
+		href: `mailto:${email.url}`,
 	},
 	{
 		icon: Phone,
 		label: 'phone',
-		value: '+251 916 667 538',
-		href: 'tel:+251916667538',
+		value: phone.url.replace(/^(\+251)(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3 $4'),
+		href: `tel:${phone.url}`,
 	},
 	{
 		icon: Linkedin,
 		label: 'linkedin',
-		value: 'abenezer-ayalneh',
-		href: 'https://www.linkedin.com/in/abenezer-ayalneh-b579911b5/',
+		value: (new URL(linkedin.url).pathname.split('/').filter(Boolean).at(-1) ?? linkedin.url).replace(/-b[a-z0-9]+$/i, ''),
+		href: linkedin.url,
 	},
 ]
 
@@ -127,8 +141,8 @@ export default function ContactPage() {
 										<p className="font-mono text-xs uppercase tracking-wider text-primary">available</p>
 									</div>
 									<p className="text-sm leading-relaxed text-muted-foreground">
-										I typically respond within <span className="font-medium text-foreground">24 hours</span>. Currently{' '}
-										<span className="font-medium text-primary">open to new opportunities</span> — full-time, contract, or freelance.
+										I typically respond <span className="font-medium text-foreground">{resume.typicalResponseTime.toLowerCase()}</span>.
+										Currently <span className="font-medium text-primary">open to new opportunities</span> — {opportunityTypesText}.
 									</p>
 								</div>
 							</SectionWrapper>
