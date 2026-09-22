@@ -37,7 +37,12 @@ export function ProjectFeatureRow({ project, index }: ProjectFeatureRowProps) {
 					{/* Gallery or branded placeholder */}
 					<div className="relative aspect-[16/10] bg-gradient-to-br from-surface via-muted/40 to-background">
 						{project.images && project.images.length > 0 ? (
-							<ProjectGallery images={project.images} title={project.title} priority={index === 0} />
+							<ProjectGallery
+								images={project.images}
+								imageObjectPositions={project.imageObjectPositions}
+								title={project.title}
+								priority={index === 0}
+							/>
 						) : (
 							<div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
 								<div

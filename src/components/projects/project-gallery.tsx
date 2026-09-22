@@ -10,6 +10,7 @@ type GalleryImage = string | StaticImageData
 
 interface ProjectGalleryProps {
 	images: GalleryImage[]
+	imageObjectPositions?: string[]
 	title: string
 	priority?: boolean
 }
@@ -33,7 +34,7 @@ const HINT_KEY = 'portfolio:carousel-hint-seen'
 // even before the localStorage flag is written.
 let hintClaimedThisLoad = false
 
-export function ProjectGallery({ images, title, priority = false }: ProjectGalleryProps) {
+export function ProjectGallery({ images, imageObjectPositions, title, priority = false }: ProjectGalleryProps) {
 	const total = images.length
 	const multiple = total > 1
 
@@ -88,7 +89,15 @@ export function ProjectGallery({ images, title, priority = false }: ProjectGalle
 
 	if (!multiple) {
 		return (
-			<Image src={images[0]} alt={`${title} screenshot`} fill priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-top" />
+			<Image
+				src={images[0]}
+				alt={`${title} screenshot`}
+				fill
+				priority={priority}
+				sizes="(max-width: 1024px) 100vw, 50vw"
+				className="object-cover object-top"
+				style={{ objectPosition: imageObjectPositions?.[0] }}
+			/>
 		)
 	}
 
@@ -110,6 +119,7 @@ export function ProjectGallery({ images, title, priority = false }: ProjectGalle
 								priority={priority && i === 0}
 								sizes="(max-width: 1024px) 100vw, 50vw"
 								className="object-cover object-top"
+								style={{ objectPosition: imageObjectPositions?.[i] }}
 							/>
 						</div>
 					</CarouselItem>

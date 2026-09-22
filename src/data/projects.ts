@@ -3,6 +3,8 @@ import huddle1 from '@/assets/images/project-mockups/huddle/1.png'
 import huddle2 from '@/assets/images/project-mockups/huddle/2.png'
 import huddle3 from '@/assets/images/project-mockups/huddle/3.png'
 import huddle4 from '@/assets/images/project-mockups/huddle/4.png'
+import huddle5 from '@/assets/images/project-mockups/huddle/5.png'
+import huddle6 from '@/assets/images/project-mockups/huddle/6.png'
 import lynx1 from '@/assets/images/project-mockups/lynx/1.png'
 import lynx2 from '@/assets/images/project-mockups/lynx/2.png'
 import lynx3 from '@/assets/images/project-mockups/lynx/3.png'
@@ -35,6 +37,8 @@ export interface ProjectEntry {
 	 * rendered instead — drop the images in to upgrade.
 	 */
 	images?: (string | StaticImageData)[]
+	/** Optional CSS object positions for screenshots that need a specific crop. */
+	imageObjectPositions?: string[]
 }
 
 export const projects: ProjectEntry[] = [
@@ -50,7 +54,8 @@ export const projects: ProjectEntry[] = [
 		techStack: ['Next.js', 'React', 'TypeScript', 'Nest.js', 'LiveKit', 'Redis', 'PostgreSQL', 'Prisma', 'Docker', 'Caddy', 'Better Auth'],
 		liveUrl: 'https://huddle.abenezer-ayalneh.dev',
 		featured: true,
-		images: [huddle1, huddle2, huddle3, huddle4],
+		images: [huddle1, huddle2, huddle3, huddle4, huddle5, huddle6],
+		imageObjectPositions: ['left top'],
 	},
 	{
 		title: 'Lynx — Word Guessing Game',
@@ -77,6 +82,7 @@ export const projects: ProjectEntry[] = [
 		liveUrl: 'https://gametrix.org',
 		featured: true,
 		images: [lynx1, lynx2, lynx3, lynx4, lynx5, lynx6],
+		imageObjectPositions: ['left top'],
 	},
 	{
 		title: 'Triads — Word Puzzle Game',
