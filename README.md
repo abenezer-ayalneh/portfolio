@@ -115,6 +115,32 @@ See `.github/workflows/deploy.yml` for the complete workflow configuration.
 - **Resume** — Place `resume.pdf` in `public/`; the nav "Resume" button links to `/resume.pdf`.
 - **Project screenshots** — Drop images in `public/projects/` and set `image` on each entry in `src/data/projects.ts`; rows fall back to a branded placeholder when unset.
 
+## AI-readable profile
+
+`/llms.txt` indexes the sources. `/llms-full.txt` and `/profile.json` expose the biography, work responsibilities, education, skills, project case studies, screenshot URLs, languages, availability, and contact information from the same data used by the site. The biography is maintained in `src/data/about.ts` and preserves its links and emphasis on the homepage.
+
+The profile date is resolved at build time by `scripts/profile-last-updated.mjs` from the latest Git commit affecting `src/data`, project screenshots, or `src/lib/public-profile.ts`. Uncommitted content uses the current snapshot date. Builds without Git metadata also use the snapshot date unless `PROFILE_LAST_UPDATED=YYYY-MM-DD` is supplied. The generated `/sitemap.xml` shares this date; there is no separate XML date to maintain.
+
+The VPS workflow passes the content date into Docker, where `.git` is excluded. For a manual Docker build from a local checkout:
+
+```bash
+docker build --build-arg PROFILE_LAST_UPDATED="$(node scripts/profile-last-updated.mjs)" -t nextjs-app:latest .
+```
+
+Cloudflare can deny otherwise public endpoints before requests reach Next.js. A Python client returning HTTP 403 with `error code: 1010` is a Browser Integrity Check issue, not a `robots.txt` restriction. A narrowly scoped configuration rule can turn off only Browser Integrity Check for public GET/HEAD requests matching:
+
+```text
+(http.host eq "abenezer-ayalneh.dev" and http.request.method in {"GET" "HEAD"} and http.request.uri.path in {"/" "/projects" "/contact" "/resume.pdf" "/llms.txt" "/llms-full.txt" "/profile.json" "/robots.txt" "/sitemap.xml"})
+```
+
+This rule must be applied in Cloudflare separately from deploying the site. Verify using an ordinary Python user agent, without replacing it with a browser signature:
+
+```bash
+curl --fail-with-body -A 'Python-urllib/3.9' https://abenezer-ayalneh.dev/llms.txt
+curl --fail-with-body -A 'Python-urllib/3.9' https://abenezer-ayalneh.dev/llms-full.txt
+curl --fail-with-body -A 'Python-urllib/3.9' https://abenezer-ayalneh.dev/profile.json
+```
+
 ## License
 
 Private / personal use. All rights reserved.

@@ -19,7 +19,7 @@ jobs:
                       cd /home/portfolio
                       git pull origin main
                       set -a && source .env.production && set +a
-                      docker build -t nextjs-app:latest .
+                      docker build --build-arg PROFILE_LAST_UPDATED="$(git log -1 --format=%cs -- src/data src/assets/images/project-mockups src/lib/public-profile.ts)" -t nextjs-app:latest .
                       docker compose -f docker-compose.prod.yml down --remove-orphans
                       docker compose -f docker-compose.prod.yml up -d
                       docker compose -f docker-compose.prod.yml logs --tail=200 nextjs

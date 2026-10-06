@@ -16,6 +16,8 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build Next.js app
+ARG PROFILE_LAST_UPDATED
+ENV PROFILE_LAST_UPDATED=$PROFILE_LAST_UPDATED
 RUN pnpm run build
 
 # Production stage

@@ -1,4 +1,5 @@
 import { education } from '@/data/education'
+import { biography } from '@/data/about'
 import { projects } from '@/data/projects'
 import { resume } from '@/data/resume'
 import { SITE_CONFIG, socialLinks } from '@/data/social'
@@ -23,10 +24,17 @@ const skillNames = skillCategories.flatMap((category) => category.skills.map((sk
 const profileProjects = projects.map((project) => ({
 	title: project.title,
 	shortDescription: project.shortDescription,
+	description: project.description,
+	problem: project.problem,
+	solution: project.solution,
 	techStack: project.techStack,
 	liveUrl: project.liveUrl,
 	githubUrl: project.githubUrl,
 	featured: project.featured,
+	images: (project.images ?? []).map((image, index) => ({
+		url: new URL(typeof image === 'string' ? image : image.src, SITE_CONFIG.url).href,
+		alt: `${project.title} screenshot ${index + 1} of ${project.images?.length}`,
+	})),
 }))
 
 const profileWorkHistory = workHistory.map((job) => ({
@@ -35,6 +43,8 @@ const profileWorkHistory = workHistory.map((job) => ({
 	jobType: job.jobType,
 	period: job.period,
 	location: job.location,
+	description: job.description,
+	bulletPoints: job.bulletPoints,
 }))
 
 const profileEducation = education.map((entry) => ({
@@ -42,6 +52,7 @@ const profileEducation = education.map((entry) => ({
 	institution: entry.institution,
 	period: entry.period,
 	location: entry.location,
+	description: entry.description,
 }))
 
 const profileSkills = skillCategories.map((category) => ({
@@ -55,7 +66,7 @@ const profileSkills = skillCategories.map((category) => ({
  * AI-facing endpoints and structured metadata in sync with the human pages.
  */
 export const publicProfile = {
-	schemaVersion: '1.0',
+	schemaVersion: '1.1',
 	lastUpdated: SITE_CONFIG.lastUpdated,
 	canonicalUrl: SITE_CONFIG.url,
 	machineReadableSources: profileUrls,
@@ -70,6 +81,7 @@ export const publicProfile = {
 		opportunityTypes: resume.opportunityTypes,
 		focusAreas: resume.focusAreas,
 		languages: resume.languages,
+		biography: biography.map((paragraph) => paragraph.map((segment) => segment.text).join('')),
 	},
 	atAGlance: {
 		yearsExperience: resume.yearsOfExperience,
@@ -163,7 +175,7 @@ This is the official portfolio and professional source for ${SITE_CONFIG.name}, 
 }
 
 export function renderLlmsFullText(): string {
-	const work = workHistory
+	const work = profileWorkHistory
 		.map(
 			(job) => `### ${job.title} — ${job.company.name}
 
@@ -178,7 +190,7 @@ ${formatList(job.bulletPoints)}`,
 		)
 		.join('\n\n')
 
-	const educationText = education
+	const educationText = profileEducation
 		.map(
 			(entry) => `### ${entry.degree}
 
@@ -193,7 +205,7 @@ ${entry.description}`,
 
 	const skillsText = skillCategories.map((category) => `### ${category.category}\n\n${formatList(category.skills.map((skill) => skill.name))}`).join('\n\n')
 
-	const projectsText = projects
+	const projectsText = profileProjects
 		.map(
 			(project) => `### ${project.title}
 
@@ -214,7 +226,11 @@ ${project.problem}
 
 #### Solution
 
-${project.solution}`,
+${project.solution}
+
+#### Screenshots
+
+${formatList(project.images.map((image) => `[${image.alt}](${image.url})`))}`,
 		)
 		.join('\n\n')
 
@@ -249,6 +265,10 @@ ${resume.summary}
 ## Languages
 
 ${formatList(resume.languages.map((language) => `${language.name}: ${language.level}`))}
+
+## About
+
+${publicProfile.identity.biography.join('\n\n')}
 
 ## Work experience
 

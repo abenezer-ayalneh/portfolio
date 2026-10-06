@@ -2,6 +2,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper'
 import { SectionHeading } from '@/components/shared/section-heading'
 import { Separator } from '@/components/ui/separator'
 import { education } from '@/data/education'
+import { biography } from '@/data/about'
 import { resume } from '@/data/resume'
 import { MapPin, Calendar, Code2, GraduationCap, ExternalLink } from 'lucide-react'
 
@@ -57,24 +58,26 @@ export function AboutSection() {
 					{/* Bio + education */}
 					<SectionWrapper delay={0.2} className="lg:col-span-3">
 						<div className="space-y-6">
-							<p className="leading-relaxed text-muted-foreground">
-								I&apos;m a passionate Full-Stack Developer with 5+ years of professional experience building everything from enterprise web
-								applications to real-time multiplayer games.
-							</p>
-							<p className="leading-relaxed text-muted-foreground">
-								My journey started at <span className="font-medium text-foreground">Addis Ababa University</span> where I studied Computer
-								Science, and I&apos;ve been building things for the web ever since. I love working across the full stack — architecting backends
-								with <span className="font-medium text-foreground">Nest.js</span>, crafting responsive frontends with{' '}
-								<span className="font-medium text-foreground">Angular</span> and <span className="font-medium text-foreground">React</span>, and
-								wiring them together with clean, maintainable <span className="font-medium text-foreground">TypeScript</span>.
-							</p>
-							<p className="leading-relaxed text-muted-foreground">
-								When I&apos;m not writing code, you&apos;ll find me exploring new technologies, contributing to side projects like{' '}
-								<a href="https://gametrix.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-									Lynx
-								</a>
-								, or thinking about the next thing to build.
-							</p>
+							{biography.map((paragraph, index) => (
+								<p key={index} className="leading-relaxed text-muted-foreground">
+									{paragraph.map((segment, segmentIndex) =>
+										segment.href ? (
+											<a
+												key={segmentIndex}
+												href={segment.href}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-primary hover:underline">
+												{segment.text}
+											</a>
+										) : (
+											<span key={segmentIndex} className={segment.emphasis ? 'font-medium text-foreground' : undefined}>
+												{segment.text}
+											</span>
+										),
+									)}
+								</p>
+							))}
 
 							<div className="flex flex-wrap gap-4">
 								{highlights.map(({ icon: Icon, label }) => (
