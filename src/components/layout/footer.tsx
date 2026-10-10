@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { MakerSignature } from '@/components/maker/react/MakerSignature'
 import { Mail } from 'lucide-react'
 import { Github, Linkedin } from '@/components/icons/brand-icons'
 import { Separator } from '@/components/ui/separator'
@@ -60,6 +61,8 @@ export function Footer() {
 						AI-readable profile
 					</Link>
 				</p>
+
+				<MakerSignature className="mt-4 text-foreground" />
 			</div>
 		</footer>
 	)
